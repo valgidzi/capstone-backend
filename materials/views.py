@@ -13,7 +13,9 @@ def material_list(request, format=None):
     if request.method == 'GET':
         materials = Material.objects.all()
         serializer = MaterialSerializer(materials, many=True)
-        return Response(serializer.data)
+        response = Response(serializer.data)
+        response['Access-Control-Allow-Origin'] = '*'
+        return response
 
     elif request.method == 'POST':
         serializer = MaterialSerializer(data=request.data)
