@@ -12,7 +12,9 @@ class MaterialList(APIView):
     def get(self, request, format=None):
         materials = Material.objects.all()
         serializer = MaterialSerializer(materials, many=True)
-        return Response(serializer.data)
+        response = Response(serializer.data)
+        response['Access-Control-Allow-Origin'] = '*'
+        return response
 
     def post(self, request, format=None):
         serializer = MaterialSerializer(data=request.data)
@@ -34,7 +36,9 @@ class MaterialDetail(APIView):
     def get(self, request, pk, format=None):
         material = self.get_object(pk)
         serializer = MaterialSerializer(material)
-        return Response(serializer.data)
+        response = Response(serializer.data)
+        response['Access-Control-Allow-Origin'] = '*'
+        return response
 
     def put(self, request, pk, format=None):
         material = self.get_object(pk)
