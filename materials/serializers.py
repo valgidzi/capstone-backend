@@ -1,10 +1,18 @@
 from rest_framework import serializers
-from materials.models import Material
+from materials.models import Material, Text
 
 class MaterialSerializer(serializers.ModelSerializer):
     class Meta:
         model = Material
         fields = ('id', 'title', 'level')
+
+class TextSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    original = serializers.CharField()
+    score = serializers.CharField(source='level_score', read_only=True)
+    class Meta:
+        model = Text
+        fields = '__all__'
 
 # class MaterialSerializer(serializers.Serializer):
 #     id = serializers.IntegerField(read_only=True)

@@ -1,13 +1,14 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from materials.models import Material
-from materials.serializers import MaterialSerializer
+from materials.models import Material, Text
+from materials.serializers import MaterialSerializer, TextSerializer
 from django.http import Http404
+
 
 class MaterialList(APIView):
     """
-    List all snippets, or create a new snippet.
+    List all materials, or create a new material.
     """
     def get(self, request, format=None):
         materials = Material.objects.all()
@@ -25,7 +26,7 @@ class MaterialList(APIView):
 
 class MaterialDetail(APIView):
     """
-    Retrieve, update or delete a code material.
+    Retrieve, update or delete a material.
     """
     def get_object(self, pk):
         try:
@@ -52,3 +53,21 @@ class MaterialDetail(APIView):
         material = self.get_object(pk)
         material.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class TextList(APIView):
+    """
+    List all texts, or create a new text.
+    """
+    def get(self, request, format=None):
+        texts = Text.objects.all()
+        serializer = TextSerializer(texts, many=True)
+        response = Response(serializer.data)
+        response['Access-Control-Allow-Origin'] = '*'
+        return response
+
+    def post(self, request, format=None):
+        serializer = TextSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
