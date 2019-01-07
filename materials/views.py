@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from materials.models import Material, Text
 from materials.serializers import MaterialSerializer, TextSerializer
 from django.http import Http404
+import requests
+import os
 
 
 class MaterialList(APIView):
@@ -73,3 +75,14 @@ class TextList(APIView):
             response['Access-Control-Allow-Origin'] = '*'
             return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class Definitions(APIView):
+    def get(self, request):
+        word = request.GET['word']
+        key = os.environ.get('LEARNER_API_KEY')
+        r = requests.get(f'https://www.dictionaryapi.com/api/v3/references/learners/json/{word}?key={key}')
+        if r.status_code == 200:
+            response = r.json()
+            data = response[0]["shortdef"][0]
+            return Response({"definition": data}, status=status.HTTP_200_OK)
+        return Response({"error": "Request failed"}, status=r.status_code)
