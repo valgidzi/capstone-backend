@@ -81,8 +81,14 @@ class Definitions(APIView):
         word = request.GET['word']
         key = os.environ.get('LEARNER_API_KEY')
         r = requests.get(f'https://www.dictionaryapi.com/api/v3/references/learners/json/{word}?key={key}')
+        definitions = []
         if r.status_code == 200:
             response = r.json()
-            data = response[0]["shortdef"][0]
-            return Response({"definition": data}, status=status.HTTP_200_OK)
+            for data in response:
+                if len(data['shortdef']) > 1:
+                    definition = ', '.join(data['shortdef'])
+                else:
+                    definition = data['shortdef'][0]
+                definitions.append(definition)
+            return Response({"definitions": definitions}, status=status.HTTP_200_OK)
         return Response({"error": "Request failed"}, status=r.status_code)
