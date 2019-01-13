@@ -33,3 +33,5 @@ class Handout(models.Model):
     text = models.TextField()
     words = models.TextField()
     word_order = models.TextField()
+    definitions = models.TextField()
+    definitions_order = models.TextField()

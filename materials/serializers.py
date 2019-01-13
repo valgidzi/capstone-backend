@@ -17,7 +17,7 @@ class TextSerializer(serializers.ModelSerializer):
 class HandoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Handout
-        fields = ('id', 'created', 'text', 'words', 'word_order')
+        fields = ('id', 'created', 'text', 'words', 'word_order', 'definitions', 'definitions_order')
 
 # class MaterialSerializer(serializers.Serializer):
 #     id = serializers.IntegerField(read_only=True)
