@@ -27,3 +27,9 @@ class Text(models.Model):
             return "C1"
         elif grade == 10 or grade == 11:
             return "C2"
+
+class Handout(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    text = models.TextField()
+    words = models.TextField()
+    word_order = models.TextField()

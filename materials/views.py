@@ -1,8 +1,8 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from materials.models import Material, Text
-from materials.serializers import MaterialSerializer, TextSerializer
+from materials.models import Material, Text, Handout
+from materials.serializers import MaterialSerializer, TextSerializer, HandoutSerializer
 from django.http import Http404
 import requests
 import os
@@ -92,3 +92,18 @@ class Definitions(APIView):
                 definitions.append(definition)
             return Response({"definitions": definitions}, status=status.HTTP_200_OK)
         return Response({"error": "Request failed"}, status=r.status_code)
+
+class HandoutList(APIView):
+    def get(self, request, format=None):
+        handouts = Handout.objects.all()
+        serializer = HandoutSerializer(handouts, many=True)
+        response = Response(serializer.data)
+        response['Access-Control-Allow-Origin'] = '*'
+        return response
+
+    def post(self, request, format=None):
+        serializer = HandoutSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

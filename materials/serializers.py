@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from materials.models import Material, Text
+from materials.models import Material, Text, Handout
 
 class MaterialSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,6 +13,11 @@ class TextSerializer(serializers.ModelSerializer):
     class Meta:
         model = Text
         fields = '__all__'
+
+class HandoutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Handout
+        fields = ('id', 'created', 'text', 'words', 'word_order')
 
 # class MaterialSerializer(serializers.Serializer):
 #     id = serializers.IntegerField(read_only=True)
