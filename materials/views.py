@@ -107,3 +107,17 @@ class HandoutList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class HandoutDetail(APIView):
+    def get_object(self, pk):
+        try:
+            return Handout.objects.get(pk=pk)
+        except Handout.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        handout = self.get_object(pk)
+        serializer = HandoutSerializer(handout)
+        response = Response(serializer.data)
+        response['Access-Control-Allow-Origin'] = '*'
+        return response

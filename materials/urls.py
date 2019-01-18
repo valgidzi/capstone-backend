@@ -7,6 +7,7 @@ urlpatterns = [
     path('materials/<int:pk>/', views.MaterialDetail.as_view()),
     path('texts/', views.TextList.as_view()),
     path('handouts/', views.HandoutList.as_view()),
+    path('handouts/<int:pk>/', views.HandoutDetail.as_view()),
     re_path(r'^definitions/$', views.Definitions.as_view()),
 ]
 
