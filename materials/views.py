@@ -6,6 +6,7 @@ from materials.serializers import TextSerializer, HandoutSerializer
 from django.http import Http404
 import requests
 import os
+from textstat import textstat
 
 
 class TextList(APIView):
@@ -27,6 +28,28 @@ class TextList(APIView):
             response['Access-Control-Allow-Origin'] = '*'
             return response
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class TextScore(APIView):
+    def level_score(self, text):
+        score = textstat.text_standard(text)
+        grade = int(score[0])
+        if grade == 0 or grade == 1:
+            return "A1"
+        elif grade == 2 or grade == 3:
+            return "A2"
+        elif grade == 4 or grade == 5:
+            return "B1"
+        elif grade == 6 or grade == 7:
+            return "B2"
+        elif grade == 8 or grade == 9:
+            return "C1"
+        elif grade == 10 or grade == 11:
+            return "C2"
+
+    def post(self, request):
+        text = request.data['text']
+        score = self.level_score(text)
+        return Response({"text": text, "score": score}, status=status.HTTP_200_OK)
 
 class Definitions(APIView):
     def get(self, request):
