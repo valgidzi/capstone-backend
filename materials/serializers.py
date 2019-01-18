@@ -1,10 +1,6 @@
 from rest_framework import serializers
-from materials.models import Material, Text, Handout
+from materials.models import Text, Handout
 
-class MaterialSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Material
-        fields = ('id', 'title', 'level')
 
 class TextSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
