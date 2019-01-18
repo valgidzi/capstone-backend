@@ -1,33 +1,13 @@
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from materials.models import Text, Handout
-from materials.serializers import TextSerializer, HandoutSerializer
+from materials.models import Handout
+from materials.serializers import HandoutSerializer
 from django.http import Http404
 import requests
 import os
 from textstat import textstat
 
-
-class TextList(APIView):
-    """
-    List all texts, or create a new text.
-    """
-    def get(self, request, format=None):
-        texts = Text.objects.all()
-        serializer = TextSerializer(texts, many=True)
-        response = Response(serializer.data)
-        response['Access-Control-Allow-Origin'] = '*'
-        return response
-
-    def post(self, request, format=None):
-        serializer = TextSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            response = Response(serializer.data, status=status.HTTP_201_CREATED)
-            response['Access-Control-Allow-Origin'] = '*'
-            return response
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class TextScore(APIView):
     def level_score(self, text):

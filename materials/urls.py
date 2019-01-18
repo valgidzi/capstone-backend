@@ -3,7 +3,6 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from materials import views
 
 urlpatterns = [
-    path('texts/', views.TextList.as_view()),
     path('textscore/', views.TextScore.as_view()),
     path('handouts/', views.HandoutList.as_view()),
     path('handouts/<int:pk>/', views.HandoutDetail.as_view()),
