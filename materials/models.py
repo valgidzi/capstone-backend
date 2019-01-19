@@ -4,8 +4,10 @@ from django.db import models
 
 class Handout(models.Model):
     created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)
     text = models.TextField()
     words = models.TextField()
-    word_order = models.TextField()
     definitions = models.TextField()
-    definitions_order = models.TextField()
+    user = models.TextField()
+    score = models.TextField()
+    title = models.TextField()

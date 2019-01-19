@@ -4,7 +4,7 @@ from materials.models import Handout
 class HandoutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Handout
-        fields = ('id', 'created', 'text', 'words', 'word_order', 'definitions', 'definitions_order')
+        fields = ('id', 'created', 'updated', 'text', 'words', 'definitions', 'user', 'score', 'title')
 
 # class MaterialSerializer(serializers.Serializer):
 #     id = serializers.IntegerField(read_only=True)
