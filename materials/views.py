@@ -29,7 +29,7 @@ class TextScore(APIView):
     def post(self, request):
         text = request.data['text']
         score = self.level_score(text)
-        return Response({"text": text, "score": score}, status=status.HTTP_200_OK)
+        return Response({"text": text, "score": score})
 
 class Definitions(APIView):
     def get(self, request):
@@ -45,7 +45,7 @@ class Definitions(APIView):
                 else:
                     definition = data['shortdef'][0]
                 definitions.append(definition)
-            return Response({"definitions": definitions}, status=status.HTTP_200_OK)
+            return Response({"definitions": definitions})
         return Response({"error": "Request failed"}, status=r.status_code)
 
 class HandoutList(APIView):
@@ -53,7 +53,6 @@ class HandoutList(APIView):
         handouts = Handout.objects.all()
         serializer = HandoutSerializer(handouts, many=True)
         response = Response(serializer.data)
-        response['Access-Control-Allow-Origin'] = '*'
         return response
 
     def post(self, request, format=None):
@@ -74,7 +73,6 @@ class HandoutDetail(APIView):
         handout = self.get_object(pk)
         serializer = HandoutSerializer(handout)
         response = Response(serializer.data)
-        response['Access-Control-Allow-Origin'] = '*'
         return response
 
     def put(self, request, pk, format=None):
@@ -87,6 +85,5 @@ class HandoutDetail(APIView):
 
     def delete(self, request, pk, format=None):
         handout = self.get_object(pk)
-        id = handout.id
         handout.delete()
         return Response({"id": pk})
