@@ -76,3 +76,17 @@ class HandoutDetail(APIView):
         response = Response(serializer.data)
         response['Access-Control-Allow-Origin'] = '*'
         return response
+
+    def put(self, request, pk, format=None):
+        handout = self.get_object(pk)
+        serializer = HandoutSerializer(handout, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        handout = self.get_object(pk)
+        id = handout.id
+        handout.delete()
+        return Response({"id": pk})
