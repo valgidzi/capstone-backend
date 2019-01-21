@@ -13,18 +13,21 @@ class TextScore(APIView):
     def level_score(self, text):
         score = textstat.text_standard(text)
         grade = int(score[0])
-        if grade == 0 or grade == 1:
-            return "A1"
-        elif grade == 2 or grade == 3:
-            return "A2"
-        elif grade == 4 or grade == 5:
-            return "B1"
-        elif grade == 6 or grade == 7:
-            return "B2"
-        elif grade == 8 or grade == 9:
-            return "C1"
-        elif grade == 10 or grade == 11:
-            return "C2"
+        levels = {
+            0: "A1 - Low",
+            1: "A1 - High",
+            2: "A2 - Low",
+            3: "A2 - High",
+            4: "B1 - Low",
+            5: "B1 - High",
+            6: "B2 - Low",
+            7: "B2 - High",
+            8: "C1 - Low",
+            9: "C1 - High",
+            10: "C2 - Low",
+            11: "C2 - High",
+        }
+        return levels[grade]
 
     def post(self, request):
         text = request.data['text']
