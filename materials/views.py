@@ -41,10 +41,10 @@ class Definitions(APIView):
             response = r.json()
             for data in response:
                 if len(data['shortdef']) > 1:
-                    definition = ', '.join(data['shortdef'])
+                    for item in data['shortdef']:
+                        definitions.append(item)
                 else:
-                    definition = data['shortdef'][0]
-                definitions.append(definition)
+                    definitions.append(data['shortdef'][0])
             return Response({"definitions": definitions})
         return Response({"error": "Request failed"}, status=r.status_code)
 
